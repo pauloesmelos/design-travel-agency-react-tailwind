@@ -8,8 +8,8 @@ import Maldives3 from '../../assets/maldives3.jpg';
 
 const Carousel = () => {
   const [index, setIndex] = React.useState(0);
-  const [imgs, setImgs] = React.useState([]);
-
+  const [imgs, setImgs] = React.useState([]); 
+  const slider = React.useRef();
   const handleCarousel = (type) => {
     if(type === "left") {
       setIndex(e => e - 1 > 0 ? e - 1 : 0);
@@ -17,6 +17,7 @@ const Carousel = () => {
     else {
       setIndex(e => e + 1 < imgs.length ? e + 1 : 0);
     }
+    clearInterval(slider.current);
   }
   const nextCarousel = (array) => {
     if(array.length) {
@@ -27,8 +28,8 @@ const Carousel = () => {
   React.useEffect(() => {
     const arrayImgs = [BoraBora2, Keywest, Maldives, Maldives2, Maldives3];
     setImgs(arrayImgs);
-    const interval = setInterval(() => nextCarousel(arrayImgs), 2500);
-    return () => clearInterval(interval);
+    slider.current = setInterval(() => nextCarousel(arrayImgs), 2500);
+    return () => clearInterval(slider.current);
   }, []);
 
   return (
@@ -39,7 +40,7 @@ const Carousel = () => {
             <div className="relative w-full h-full">
                 {imgs?.map((img, id) => (
                     <div key={id * Math.random()}>
-                        {id === index && <img className="rounded-md shadow-md object-cover w-full h-[500px] md:h-[800px]" src={img} />}
+                        {id === index && <img className="rounded-md shadow-md object-cover w-full h-[500px] md:h-[800px] border-double border-4 border-blue-300" src={img} />}
                     </div>
                 ))}
                 <div className="absolute top-[50%] w-full flex justify-between items-center px-4 md:px-12">
@@ -54,7 +55,7 @@ const Carousel = () => {
                   <div className="flex items-center gap-4 mt-4">
                     {imgs.map((_, i) => (
                       <div className="cursor-pointer" key={i * Math.random()}>
-                        <FaCircle className={i === index ? "text-blue-600 text-lg" : "text-gray-300 text-lg"} />
+                        <FaCircle className={i === index ? "text-blue-600 text-sm" : "text-gray-300 text-sm"} />
                       </div>
                     ))}
                   </div>
